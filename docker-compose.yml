@@ -56,3 +56,26 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=ordersdb
+
+#==========================
+#payments Microservice
+#==========================
+
+  #Orders Ms
+  payments-ms:
+    container_name: payments-ms
+    build: ./payments-ms
+    ports:
+      - '${PAYMENTS_MS_PORT}:${PAYMENTS_MS_PORT}'
+    volumes:
+      - ./payments-ms/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=${PAYMENTS_MS_PORT}
+      - NATS_SERVERS=nats://nats-server:4222
+      - STRIPE_SECRET=${PAYMENTS_MS_PORT_STRIPE_SECRET}
+      - STRIPE_SUCCESS_URL=${PAYMENTS_MS_PORT_STRIPE_SUCCESS_URL}
+      - STRIPE_CANCEL_URL=${PAYMENTS_MS_PORT_STRIPE_CANCEL_URL}
+      - STRIPE_ENDPOINTSECRET=${PAYMENTS_MS_PORT_STRIPE_ENDPOINTSECRET}
+
+
